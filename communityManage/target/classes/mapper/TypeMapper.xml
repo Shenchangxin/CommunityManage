@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shenchangxin.community.mapper.TypeMapper">
+
+    <resultMap id="TypeMap" type="com.shenchangxin.community.pojo.Type">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="findTypeById" parameterType="Integer" resultMap="TypeMap">
+        select * from type where id=#{id}
+    </select>
+
+    <select id="findTypeByName" parameterType="String" resultMap="TypeMap">
+        select * from type where name=#{typeName}
+    </select>
+
+    <insert id="addType" parameterType="com.shenchangxin.community.pojo.Type">
+        insert into type values (null,#{name})
+    </insert>
+
+    <delete id="deleteTypeById" parameterType="Integer">
+        delete from type where id=#{id}
+    </delete>
+
+    <select id="getAllType" resultMap="TypeMap">
+        select * from type limit 40
+    </select>
+
+    <update id="updateType" >
+        update type
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

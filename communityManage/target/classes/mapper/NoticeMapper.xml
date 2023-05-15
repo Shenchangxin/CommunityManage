@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shenchangxin.community.mapper.NoticeMapper">
+    <resultMap id="NoticeMap" type="com.shenchangxin.community.pojo.Notice">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="communityId" column="community_id"/>
+        <result property="userId" column="u_id"/>
+        <result property="createTime" column="create_time"/>
+        <association property="user"
+                     select="com.shenchangxin.community.mapper.UserMapper.findUserById"
+                     column="u_id">
+        </association>
+        <association property="community"
+                     select="com.shenchangxin.community.mapper.CommunityMapper.findCommunityById"
+                     column="community_id">
+        </association>
+    </resultMap>
+
+    <insert id="addNotice" parameterType="com.shenchangxin.community.pojo.Notice">
+        insert into notice values (null,#{title},#{content},#{communityId},#{userId},#{createTime})
+    </insert>
+
+    <delete id="deleteNoticeById" parameterType="Integer">
+        delete from notice where id=#{id}
+    </delete>
+
+    <select id="findNoticeById" parameterType="Integer" resultMap="NoticeMap">
+        select * from notice where id=#{id}
+    </select>
+
+    <select id="getAllNotice" resultMap="NoticeMap">
+        select * from notice limit 40
+    </select>
+
+
+
+    <update id="updateNotice" >
+        update notice
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+
+            <if test="content != null">
+                content = #{content},
+            </if>
+
+            <if test="communityId != null">
+                communityId = #{communityId},
+            </if>
+            <if test="userId != null">
+                userId = #{userId},
+            </if>
+
+        </set>
+        where id=#{id}
+    </update>
+
+
+
+</mapper>

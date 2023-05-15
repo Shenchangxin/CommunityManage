@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shenchangxin.community.mapper.TransactionMapper">
+    <resultMap id="TransactionMap" type="com.shenchangxin.community.pojo.Transaction">
+        <id property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="remark" column="remark"/>
+        <result property="money" column="money"/>
+        <result property="communityId" column="community_id"/>
+        <result property="activityId" column="activity_id"/>
+        <association property="activity"
+                     select="com.shenchangxin.community.mapper.ActivityMapper.findActivityById"
+                     column="activity_id">
+        </association>
+        <association property="community"
+                     select="com.shenchangxin.community.mapper.CommunityMapper.findCommunityById"
+                     column="community_id">
+        </association>
+    </resultMap>
+
+    <insert id="addTransaction" parameterType="com.shenchangxin.community.pojo.Transaction">
+        insert into transaction values (null,#{type},#{activityId},#{money},#{remark})
+    </insert>
+
+    <delete id="deleteTransactionById" parameterType="Integer">
+        delete from transaction where id=#{id}
+    </delete>
+
+    <select id="findTransactionById" parameterType="Integer" resultMap="TransactionMap">
+        select * from transaction where id=#{id}
+    </select>
+
+    <select id="findAllTransaction" resultMap="TransactionMap">
+        select * from transaction limit 40
+    </select>
+
+    <update id="updateTransaction" >
+        update transaction
+        <set>
+            <if test="type != null">
+                type = #{type},
+            </if>
+
+            <if test="activity_id != null">
+                activity_id = #{activityId},
+            </if>
+
+            <if test="money != null">
+                money = #{money},
+            </if>
+
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+
+        </set>
+        where id=#{id}
+    </update>
+
+
+</mapper>

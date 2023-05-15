@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shenchangxin.community.mapper.UserMapper">
+
+    <resultMap id="UserMap" type="com.shenchangxin.community.pojo.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="department" column="dept"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="image" column="image"/>
+        <result property="grade" column="grade"/>
+        <result property="sex" column="sex"/>
+        <result property="period" column="period"/>
+    </resultMap>
+
+    <insert id="saveUser" parameterType="User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into user (id,username,password,dept,name,phone,image,grade,sex,period)
+        values (null,#{username},#{password},#{department},#{name},#{phone},#{image},#{grade},#{sex},#{period})
+    </insert>
+
+    <delete id="deleteUserById" parameterType="Integer">
+        delete from user where id=#{id}
+    </delete>
+
+    <select id="findUserById" parameterType="Integer" resultMap="UserMap">
+        select * from user where id=#{id}
+    </select>
+
+    <select id="searchUserByFields" parameterType="String" resultMap="UserMap">
+        select * from user where name like '%${fields}%'
+    </select>
+
+    <update id="updateUser" parameterType="User">
+        update user
+        <set>
+            <if test="username!=null">
+                username = #{username},
+            </if>
+
+            <if test="password!=null">
+                password = #{password},
+            </if>
+
+            <if test="department!=null">
+                department = #{department},
+            </if>
+
+            <if test="name!=null">
+                name = #{name},
+            </if>
+
+            <if test="phone!=null">
+                phone = #{phone},
+            </if>
+            <if test="image!=null">
+                image = #{image},
+            </if>
+            <if test="grade!=null">
+                grade = #{grade},
+            </if>
+            <if test="sex!=null">
+                sex = #{sex},
+            </if>
+            <if test="period!=null">
+                period = #{period},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="findUserByUsername" parameterType="String" resultMap="UserMap">
+        select * from user where username=#{username}
+    </select>
+
+    <select id="getAllUser" resultMap="UserMap">
+        select * from user
+    </select>
+</mapper>

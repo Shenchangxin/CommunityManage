@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shenchangxin.community.mapper.CommunityMapper">
+    <resultMap id="CommunityMap" type="com.shenchangxin.community.pojo.Community">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="typeId" column="type_id"/>
+        <result property="userId" column="u_id"/>
+        <result property="createTime" column="createTime"/>
+        <association property="user"
+                     select="com.shenchangxin.community.mapper.UserMapper.findUserById"
+                     column="u_id">
+        </association>
+        <association property="type"
+                     select="com.shenchangxin.community.mapper.TypeMapper.findTypeById"
+                     column="type_id">
+        </association>
+    </resultMap>
+
+    <insert id="addCommunity" parameterType="Community" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into community values (null,#{name},#{description},#{userId},#{typeId},#{createTime})
+    </insert>
+
+    <select id="findCommunityById" parameterType="Integer" resultMap="CommunityMap">
+        select * from community where id=#{id}
+    </select>
+
+    <select id="getAllCommunity" resultMap="CommunityMap">
+        select * from community
+    </select>
+
+    <select id="searchCommunity" parameterType="String" resultMap="CommunityMap">
+        select * from community where community.name like '%${fields}%'
+    </select>
+
+    <delete id="deleteCommunityById" parameterType="Integer" >
+        delete from community where id=#{id}
+    </delete>
+
+    <select id="findCommunityByName" parameterType="String" resultMap="CommunityMap">
+        select * from community where name=#{name}
+    </select>
+
+    <update id="updateCommunity" >
+        update community
+        <set>
+            <if test="name!=null">
+                name = #{name},
+            </if>
+
+            <if test="description!=null">
+                description = #{description},
+            </if>
+
+            <if test="typeId!=null">
+                type_id = #{typeId},
+            </if>
+
+        </set>
+        where id=#{id}
+    </update>
+
+
+
+
+</mapper>

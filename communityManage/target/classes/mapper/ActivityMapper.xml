@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shenchangxin.community.mapper.ActivityMapper">
+    <resultMap id="ActivityMap" type="com.shenchangxin.community.pojo.Activity">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="content" column="content"/>
+        <result property="views" column="views"/>
+        <result property="communityId" column="community_id"/>
+        <result property="userId" column="u_id"/>
+        <result property="createTime" column="create_time"/>
+        <association property="user"
+                     select="com.shenchangxin.community.mapper.UserMapper.findUserById"
+                     column="u_id">
+        </association>
+        <association property="community"
+                     select="com.shenchangxin.community.mapper.CommunityMapper.findCommunityById"
+                     column="community_id">
+        </association>
+    </resultMap>
+
+    <select id="getAllActivity" resultMap="ActivityMap">
+        select * from activity
+    </select>
+
+    <select id="findActivityById" parameterType="Integer" resultMap="ActivityMap">
+        select * from activity where id=#{id}
+    </select>
+
+    <insert id="saveActivity" parameterType="com.shenchangxin.community.pojo.Activity">
+        insert into activity values (null,#{name},0,#{content},#{userId},#{communityId},#{createTime})
+    </insert>
+
+    <delete id="deleteActivityById" parameterType="Integer">
+        delete from activity where id=#{id}
+    </delete>
+
+    <update id="updateActivity" >
+        update activity
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+
+            <if test="content != null">
+                content = #{content},
+            </if>
+
+            <if test="communityId != null">
+                community_id = #{communityId},
+            </if>
+
+        </set>
+        where id=#{id}
+    </update>
+
+
+
+</mapper>

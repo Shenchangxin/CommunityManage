@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/communitymanage?useunicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mapper:
+  mappers:
+    - tk.mybatis.mapper.common.Mapper
+
+  not-empty: true
+
+logging:
+  level:
+    com.alex.spring.boot.blog.mapper: debug
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  base-packages: com.shenchangxin.community.mapper
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.shenchangxin.community.pojo
+
+#pagehelper.helperDialect=com.github.pagehelper.dialect.helper.MySqlDialect
+#pagehelper.reasonable=true
+#pagehelper.supportMethodsArguments=true
+#pagehelper.params=count=countSql
+pagehelper:
+  helper-dialect: com.github.pagehelper.dialect.helper.MySqlDialect
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+jwt:
+
+  time: 432000
+
+  secret: "BlogSecret"
+
+  prefix: "Bearer "
+
+  header: "Authorization"
